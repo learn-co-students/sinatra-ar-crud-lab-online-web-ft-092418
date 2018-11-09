@@ -1,4 +1,3 @@
-
 require_relative '../../config/environment'
 
 class ApplicationController < Sinatra::Base
@@ -9,6 +8,10 @@ class ApplicationController < Sinatra::Base
   end
 
   get '/' do
+
+  end
+
+  get '/posts' do
     @posts = Post.all
     erb :index
   end
@@ -17,17 +20,10 @@ class ApplicationController < Sinatra::Base
     erb :new
   end
 
-  get '/posts' do
-    @posts = Post.all
+  post '/posts' do
+    Post.create(params)
     erb :index
   end
-
-  post '/posts' do
-    @post = Post.create(params )
-
-    redirect to "/posts"
-  end
-
 
   get '/posts/:id' do
     @post = Post.find_by_id(params[:id])
@@ -41,17 +37,16 @@ class ApplicationController < Sinatra::Base
 
   patch '/posts/:id' do
     @post = Post.find_by_id(params[:id])
-    @post.update(name: params[:name] , content: params[:content])
-    redirect "/posts/#{@post.id}"
+    @post.name = params[:name]
+    @post.content = params[:content]
+    @post.save
+    erb :show
   end
 
   delete '/posts/:id/delete' do
-    post = Post.find(params[:id])
-    @post_name = post.name
-    post.destroy
+    @post = Post.delete(params[:id])
     erb :delete
   end
-
 
 
 end
