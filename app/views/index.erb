@@ -1,0 +1,12 @@
+<h1>POSTS</h1>
+
+<div>
+  <% @posts.each do |post| %>
+  <a href="/posts/<%= post.id %>"><h2><%= post.name %></h2></a>
+    <h3><%= post.content %></h3>
+    <form method = "post" action = "/posts/<%= post.id %>/delete">
+        <input type = "hidden" id = "hidden" name = "_method" value = "DELETE" />
+        <input type = submit value = "DELETE" id = "delete"/>
+    </form>
+  <% end %>
+</div>
